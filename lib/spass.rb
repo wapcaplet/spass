@@ -34,7 +34,7 @@ class SPass
   # Generate a passphrase of at least the given length in characters
   def generate(length)
     phrase = ''
-    while phrase.length < length
+    while phrase.length < length + 1 # to account for trailing space
       phrase += random_ascii_word + ' '
     end
     return phrase.chomp

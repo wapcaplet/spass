@@ -59,7 +59,9 @@ describe SPass do
   describe "#generate" do
     it "is at least the given length" do
       [10, 15, 20, 25, 30, 35, 40].each do |len|
-        @sp.generate(len).length.should be >= len
+        10.times do
+          @sp.generate(len).length.should be >= len
+        end
       end
     end
   end

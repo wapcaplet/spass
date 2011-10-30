@@ -44,6 +44,14 @@ if you want to use words from a different dictionary, pass a second argument:
     $ spass 12 my_words.txt
 
 
+Future plans
+------------
+
+- Optional inclusion of uppercase, numbers, symbols
+- Avoid word repetition
+
+
+
 MIT License
 -----------
 
