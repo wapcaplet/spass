@@ -19,7 +19,7 @@ Installation
 
 spass is distributed as a gem, so just do:
 
-  $ gem install spass
+    $ gem install spass
 
 
 Usage
@@ -28,14 +28,14 @@ Usage
 Run `spass` from the command-line to see usage notes. At present, the only
 argument is the minimum passphrase length (in characters). Examples:
 
-  $ ./makepass.rb 12
-  hive frighten
+    $ ./makepass.rb 12
+    hive frighten
 
-  $ ./makepass.rb 24
-  moppet castigator harvesters
+    $ ./makepass.rb 24
+    moppet castigator harvesters
 
-  $ ./makepass.rb 32
-  munificent icebound raymond clorets
+    $ ./makepass.rb 32
+    munificent icebound raymond clorets
 
 Passphrases are guaranteed to be at least as long as the given number, but
 may be longer.
