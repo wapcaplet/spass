@@ -25,20 +25,23 @@ spass is distributed as a gem, so just do:
 Usage
 -----
 
-Run `spass` from the command-line to see usage notes. At present, the only
-argument is the minimum passphrase length (in characters). Examples:
+Run `spass` from the command-line to see usage notes. The first argument is the
+minimum passphrase length (in characters). Examples:
 
-    $ ./makepass.rb 12
+    $ spass 12
     hive frighten
 
-    $ ./makepass.rb 24
+    $ spass 24
     moppet castigator harvesters
 
-    $ ./makepass.rb 32
+    $ spass 32
     munificent icebound raymond clorets
 
 Passphrases are guaranteed to be at least as long as the given number, but
-may be longer.
+may be longer. By default, the words are taken from `/usr/share/dict/words`;
+if you want to use words from a different dictionary, pass a second argument:
+
+    $ spass 12 my_words.txt
 
 
 MIT License

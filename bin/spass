@@ -3,26 +3,27 @@
 require 'spass' # Is this needed?
 
 USAGE = <<EOF
-makepass.rb: Generate a passphrase with lowercase words
+spass: Generate a passphrase with lowercase words
 
 Usage:
 
-  $ makepass.rb <length>
+  $ spass <length> [path_to_dict]
 
 This script generates a plain-English passphrase of at least the given length
-(in characters), using random words from /usr/share/dict/words. Only lowercase
-letters a-z will be included in the output, making passphrases relatively easy
-to type (though usually nonsensical).
+(in characters), using random words from the given dictionary file
+(/usr/share/dict/words by default). Only lowercase letters a-z will be included
+in the output, making passphrases relatively easy to type (though usually
+nonsensical).
 
 Examples:
 
-  $ ./makepass.rb 12
+  $ spass 12
   hive frighten
 
-  $ ./makepass.rb 24
+  $ spass 24
   moppet castigator harvesters
 
-  $ ./makepass.rb 32
+  $ spass 32
   munificent icebound raymond clorets
 
 A 32-character passphrase has about 120 bits of entropy, which is overkill for
@@ -40,7 +41,11 @@ if ARGV.count == 0
   puts USAGE
 else
   length = ARGV[0].to_i
-  sp = SPass.new
+  if ARGV[1]
+    sp = SPass.new(ARGV[1])
+  else
+    sp = SPass.new
+  end
   puts sp.generate(length)
 end
 

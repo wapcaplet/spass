@@ -1,13 +1,20 @@
 
 class SPass
   def initialize(dict_path='/usr/share/dict/words')
-    @dict_path = dict_path
+    @dict_path = File.expand_path(dict_path)
     @dict_lines = `wc -l #{@dict_path}`.split.first.to_i
+  end
+
+  # Return a random line number from 1..N where N is the last line
+  # in the dict file
+  def random_line
+    rand(@dict_lines) + 1
   end
 
   # Return a random word from the dictionary, lowercased
   def random_word
-    %x[sed -n '#{rand(@dict_lines)} {p;q;}' '#{@dict_path}'].chomp.downcase
+    cmd = "sed -n '#{random_line} {p;q;}' '#{@dict_path}'"
+    `#{cmd}`.chomp.downcase
   end
 
   # Return a random word that consists of only lowercase letters
