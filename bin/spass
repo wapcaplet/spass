@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+require 'spass' # Is this needed?
+
+USAGE = <<EOF
+makepass.rb: Generate a passphrase with lowercase words
+
+Usage:
+
+  $ makepass.rb <length>
+
+This script generates a plain-English passphrase of at least the given length
+(in characters), using random words from /usr/share/dict/words. Only lowercase
+letters a-z will be included in the output, making passphrases relatively easy
+to type (though usually nonsensical).
+
+Examples:
+
+  $ ./makepass.rb 12
+  hive frighten
+
+  $ ./makepass.rb 24
+  moppet castigator harvesters
+
+  $ ./makepass.rb 32
+  munificent icebound raymond clorets
+
+A 32-character passphrase has about 120 bits of entropy, which is overkill for
+most purposes. A 24-character passphrase clocks in at about 90 bits of entropy,
+suitable for most high-security applications like root passwords or financial
+records. You might want to use a password checker to verify the strength of
+your passphrase after generating one that you like:
+
+  http://rumkin.com/tools/password/passchk.php
+
+Inspired by http://xkcd.com/936/
+EOF
+
+if ARGV.count == 0
+  puts USAGE
+else
+  length = ARGV[0].to_i
+  puts SPass::generate(length)
+end
+
+
