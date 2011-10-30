@@ -1,7 +1,12 @@
 
 class SPass
+  attr_reader :dict_path, :dict_lines
+
   def initialize(dict_path='/usr/share/dict/words')
     @dict_path = File.expand_path(dict_path)
+    if !File.file?(@dict_path)
+      raise RuntimeError, "Cannot find dict file: #{@dict_path}"
+    end
     @dict_lines = `wc -l #{@dict_path}`.split.first.to_i
   end
 
