@@ -40,7 +40,8 @@ if ARGV.count == 0
   puts USAGE
 else
   length = ARGV[0].to_i
-  puts SPass::generate(length)
+  sp = SPass.new
+  puts sp.generate(length)
 end
 
 

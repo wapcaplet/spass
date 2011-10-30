@@ -1,14 +1,17 @@
-DICT_PATH = '/usr/share/dict/words'
-DICT_LINES = `wc -l #{DICT_PATH}`.split.first.to_i
 
 class SPass
+  def initialize(dict_path='/usr/share/dict/words')
+    @dict_path = dict_path
+    @dict_lines = `wc -l #{@dict_path}`.split.first.to_i
+  end
+
   # Return a random word from the dictionary, lowercased
-  def self.random_word
-    %x[sed -n '#{rand(DICT_LINES)} {p;q;}' '#{DICT_PATH}'].chomp.downcase
+  def random_word
+    %x[sed -n '#{rand(@dict_lines)} {p;q;}' '#{@dict_path}'].chomp.downcase
   end
 
   # Return a random word that consists of only lowercase letters
-  def self.random_ascii_word
+  def random_ascii_word
     word = random_word
     while word =~ /[^a-z]/
       word = random_word
@@ -17,7 +20,7 @@ class SPass
   end
 
   # Generate a passphrase of at least the given length in characters
-  def self.generate(length)
+  def generate(length)
     phrase = ''
     while phrase.length < length
       phrase += random_ascii_word + ' '
