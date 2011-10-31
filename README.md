@@ -49,6 +49,8 @@ Future plans
 
 - Optional inclusion of uppercase, numbers, symbols
 - Avoid word repetition
+- Generate multiple phrases at once, or prompt for "generate another?"
+  (more efficient once the dict file is already loaded)
 
 
 

@@ -42,9 +42,9 @@ if ARGV.count == 0
 else
   length = ARGV[0].to_i
   if ARGV[1]
-    sp = SPass.new(ARGV[1])
+    sp = Generator.new(ARGV[1])
   else
-    sp = SPass.new
+    sp = Generator.new
   end
   puts sp.generate(length)
 end

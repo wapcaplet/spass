@@ -1,41 +1,39 @@
 
-class SPass
-  attr_reader :dict_path, :dict_lines
+class Generator
+  # Create a Generator using the given word dictionary, returning
+  # only words that match the given regular expression
+  def initialize(dict_path='/usr/share/dict/words', allowed=/^[a-z]+$/)
+    @allowed = allowed
+    @dict = read_dict(dict_path, allowed)
+    @dict_path = dict_path
+  end
 
-  def initialize(dict_path='/usr/share/dict/words')
-    @dict_path = File.expand_path(dict_path)
-    if !File.file?(@dict_path)
-      raise RuntimeError, "Cannot find dict file: #{@dict_path}"
+  # Read a word dictionary from the given file, and return an array
+  # of elements that match the allowed regex. Raise an exception if
+  # the given dictionary file cannot be found.
+  def read_dict(path, allowed=/^.+$/)
+    if !File.file?(path)
+      raise RuntimeError, "Cannot find dict file: #{path}"
     end
-    @dict_lines = `wc -l #{@dict_path}`.split.first.to_i
+    dict = []
+    IO.readlines(path).each do |line|
+      if line =~ allowed
+        dict << line.strip.downcase
+      end
+    end
+    return dict
   end
 
-  # Return a random line number from 1..N where N is the last line
-  # in the dict file
-  def random_line
-    rand(@dict_lines) + 1
-  end
-
-  # Return a random word from the dictionary, lowercased
+  # Return a random word from the dictionary
   def random_word
-    cmd = "sed -n '#{random_line} {p;q;}' '#{@dict_path}'"
-    `#{cmd}`.chomp.downcase
-  end
-
-  # Return a random word that consists of only lowercase letters
-  def random_ascii_word
-    word = random_word
-    while word =~ /[^a-z]/
-      word = random_word
-    end
-    return word
+    @dict[rand(@dict.count)]
   end
 
   # Generate a passphrase of at least the given length in characters
   def generate(length)
     phrase = ''
     while phrase.length < length + 1 # to account for trailing space
-      phrase += random_ascii_word + ' '
+      phrase += random_word + ' '
     end
     return phrase.chomp
   end
