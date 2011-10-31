@@ -76,16 +76,3 @@ options[:number].times do
   puts sp.generate(options[:length])
 end
 
-#if ARGV.count == 0
-  #puts USAGE
-#else
-  #length = ARGV[0].to_i
-  #if ARGV[1]
-    #sp = Generator.new(ARGV[1])
-  #else
-    #sp = Generator.new
-  #end
-  #puts sp.generate(length)
-#end
-
-
