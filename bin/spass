@@ -1,13 +1,9 @@
 #!/usr/bin/env ruby
 
-require 'spass' # Is this needed?
+require 'spass'
+require 'optparse'
 
-USAGE = <<EOF
-spass: Generate a passphrase with lowercase words
-
-Usage:
-
-  $ spass <length> [path_to_dict]
+HELP = <<EOF
 
 This script generates a plain-English passphrase of at least the given length
 (in characters), using random words from the given dictionary file
@@ -17,14 +13,11 @@ nonsensical).
 
 Examples:
 
-  $ spass 12
+  $ spass -l 12
   hive frighten
 
-  $ spass 24
+  $ spass -l 24
   moppet castigator harvesters
-
-  $ spass 32
-  munificent icebound raymond clorets
 
 A 32-character passphrase has about 120 bits of entropy, which is overkill for
 most purposes. A 24-character passphrase clocks in at about 90 bits of entropy,
@@ -35,18 +28,64 @@ your passphrase after generating one that you like:
   http://rumkin.com/tools/password/passchk.php
 
 Inspired by http://xkcd.com/936/
+
 EOF
 
-if ARGV.count == 0
-  puts USAGE
-else
-  length = ARGV[0].to_i
-  if ARGV[1]
-    sp = Generator.new(ARGV[1])
-  else
-    sp = Generator.new
+options = {
+  :length => 24,
+  :number => 1,
+  :dict => '/usr/share/dict/words',
+}
+
+optparse = OptionParser.new do |opts|
+  opts.on('-l', '--length [NUM]', Integer,
+          "Ensure passphrases are at least NUM characters.",
+          "Default: #{options[:length]}") do |len|
+    options[:length] = len
   end
-  puts sp.generate(length)
+
+  opts.on('-n', '--number [NUM]', Integer,
+          "Generate NUM passphrases.",
+          "Default: #{options[:number]}") do |num|
+    options[:number] = num
+  end
+
+  opts.on('-d', '--dict [FILE]', String,
+          "Read words from a FILE having one word per line.",
+          "Default: #{options[:dict]}") do |dict|
+    options[:dict] = dict
+  end
+
+  opts.on_tail('-h', '--help', 'Display the help page') do
+    puts opts
+    puts HELP
+    exit 0
+  end
 end
+
+begin
+  optparse.parse!
+rescue OptionParser::InvalidOption => e
+  puts optparse
+  puts "*** #{e}"
+  exit 1
+end
+
+sp = Generator.new(options[:dict])
+options[:number].times do
+  puts sp.generate(options[:length])
+end
+
+#if ARGV.count == 0
+  #puts USAGE
+#else
+  #length = ARGV[0].to_i
+  #if ARGV[1]
+    #sp = Generator.new(ARGV[1])
+  #else
+    #sp = Generator.new
+  #end
+  #puts sp.generate(length)
+#end
 
 
