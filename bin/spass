@@ -33,7 +33,7 @@ EOF
 
 options = {
   :length => 24,
-  :number => 1,
+  :number => 10,
   :dict => '/usr/share/dict/words',
   :digits => false,
   :chars => 10,

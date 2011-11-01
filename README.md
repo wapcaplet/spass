@@ -47,11 +47,8 @@ if you want to use words from a different dictionary, pass a second argument:
 Future plans
 ------------
 
-- Optional inclusion of uppercase, numbers, symbols
+- Optional inclusion of uppercase and symbols
 - Avoid word repetition
-- Generate multiple phrases at once, or prompt for "generate another?"
-  (more efficient once the dict file is already loaded)
-
 
 
 MIT License
