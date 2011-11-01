@@ -14,10 +14,14 @@ describe Generator do
         'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
     end
 
-    it "only returns lines matching a regex" do
-      @sp.read_dict(TEST_DICT, /^t/).should == ['two', 'three', 'ten']
-      @sp.read_dict(TEST_DICT, /^f/).should == ['four', 'five']
-      @sp.read_dict(TEST_DICT, /e$/).should == ['one', 'three', 'five', 'nine']
+    it "only returns words matching a regex" do
+      @sp.read_dict(TEST_DICT, :allowed=>/^t/).should == ['two', 'three', 'ten']
+      @sp.read_dict(TEST_DICT, :allowed=>/^f/).should == ['four', 'five']
+      @sp.read_dict(TEST_DICT, :allowed=>/e$/).should == ['one', 'three', 'five', 'nine']
+    end
+
+    it "only returns words with N chars or fewer" do
+      @sp.read_dict(TEST_DICT, :chars=>3).should == ['one', 'two', 'six', 'ten']
     end
 
     it "raises an exception when the file does not exist" do
@@ -38,12 +42,29 @@ describe Generator do
   end
 
 
+  describe "#random_number" do
+    it "returns a number between 1 and 999" do
+      1000.times do
+        num = @sp.random_number
+        num.should be >= 1
+        num.should be <= 99
+      end
+    end
+  end
+
+
   describe "#generate" do
     it "is at least the given length" do
       [10, 15, 20, 25, 30, 35, 40].each do |len|
         10.times do
           @sp.generate(len).length.should be >= len
         end
+      end
+    end
+
+    it "includes digits when :digits is true" do
+      10.times do
+        @sp.generate(24, :digits=>true).should =~ /^([a-z]+ [0-9]+ ?)+$/
       end
     end
   end

@@ -35,6 +35,8 @@ options = {
   :length => 24,
   :number => 1,
   :dict => '/usr/share/dict/words',
+  :digits => false,
+  :chars => 10,
 }
 
 optparse = OptionParser.new do |opts|
@@ -50,10 +52,22 @@ optparse = OptionParser.new do |opts|
     options[:number] = num
   end
 
-  opts.on('-d', '--dict [FILE]', String,
+  opts.on('-f', '--file [FILE]', String,
           "Read words from a FILE having one word per line.",
           "Default: #{options[:dict]}") do |dict|
     options[:dict] = dict
+  end
+
+  opts.on('-d', '--digits',
+          "Include random numbers from 1-99.",
+          "Default: False") do |digits|
+    options[:digits] = digits
+  end
+
+  opts.on('-c', '--chars NUM',
+          "Limit words to NUM characters in length.",
+          "Default: 10") do |chars|
+    options[:chars] = chars
   end
 
   opts.on_tail('-h', '--help', 'Display the help page') do
@@ -71,8 +85,8 @@ rescue OptionParser::InvalidOption => e
   exit 1
 end
 
-sp = Generator.new(options[:dict])
+sp = Generator.new(options[:dict], options)
 options[:number].times do
-  puts sp.generate(options[:length])
+  puts sp.generate(options[:length], :digits=>options[:digits])
 end
 
