@@ -10,8 +10,9 @@ computer to guess.
 Prerequisites
 -------------
 
-Currently, spass only words on Unix-like systems, which are expected to have a
-`/usr/share/dict/words` file. Future versions may support other platforms.
+spass assumes you have a dictionary file to use as its source of words. By
+default, `/usr/share/dict/words` is used, but you can pass your own dictionary
+using the `-f/--file` option.
 
 
 Installation
@@ -25,30 +26,40 @@ spass is distributed as a gem, so just do:
 Usage
 -----
 
-Run `spass` from the command-line to see usage notes. The first argument is the
-minimum passphrase length (in characters). Examples:
+When run without arguments, spass generates 10 passphrases up to 24 characters
+long using words up to 10 characters long. You can configure this behavior by
+passing command-line arguments; run `spass -h` to see full usage notes.
 
-    $ spass 12
-    hive frighten
+Examples:
 
-    $ spass 24
-    moppet castigator harvesters
+    $ spass -l 30           # Generate phrases at least 30 characters long
+    $ spass -l 30 -n 20     # Generate 20 phrases at least 30 characters long
+    $ spass -c 6            # Limit words to 6 characters
+    $ spass -d              # Include some 1- or 2-digit random numbers
+    $ spass -f mywords.txt  # Get words from mywords.txt (one per line)
 
-    $ spass 32
-    munificent icebound raymond clorets
+Passphrases are guaranteed to be at least as long as the given `-l` number, but
+may be longer.
 
-Passphrases are guaranteed to be at least as long as the given number, but
-may be longer. By default, the words are taken from `/usr/share/dict/words`;
-if you want to use words from a different dictionary, pass a second argument:
 
-    $ spass 12 my_words.txt
+Disclaimer
+----------
+
+spass makes absolutely no guarantee that its output results in secure
+passwords. If you use spass to protect your bank account or your porn
+collection, I cannot be held responsible if you lose your money or marriage.
+[Check your password strength](http://rumkin.com/tools/password/passchk.php)
+before using it for anything important. Passwords generated with spass are
+inherently vulnerable to a dictionary attack; the only thing that can make
+them resistant to such attacks is their length, so always use at least three
+(preferably more) words.
 
 
 Future plans
 ------------
 
 - Optional inclusion of uppercase and symbols
-- Avoid word repetition
+- Avoid possible word repetition
 
 
 MIT License
