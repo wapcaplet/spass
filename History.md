@@ -1,6 +1,14 @@
 History
 =======
 
+0.0.3
+-----
+
+- Eliminate -l/--length argument
+- Use -w/--words argument to specify the number of words
+- Default --chars to 8 instead of 10
+
+
 0.0.2
 -----
 

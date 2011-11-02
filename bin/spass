@@ -5,45 +5,37 @@ require 'optparse'
 
 HELP = <<EOF
 
-This script generates a plain-English passphrase of at least the given length
-(in characters), using random words from the given dictionary file
-(/usr/share/dict/words by default). Only lowercase letters a-z will be included
-in the output, making passphrases relatively easy to type (though usually
-nonsensical).
+This script generates passphrases using random words from the given dictionary
+file (default: /usr/share/dict/words). It was inspired by http://xkcd.com/936/
 
 Examples:
 
-  $ spass -l 12
-  hive frighten
+    $ spass -w 3            # Generate 3-word phrases
+    $ spass -w 5 -n 20      # Generate twenty 5-word phrases
+    $ spass -c 6            # Limit words to 6 characters
+    $ spass -d              # Append a digit to each word
+    $ spass -f mywords.txt  # Get words from mywords.txt (one per line)
 
-  $ spass -l 24
-  moppet castigator harvesters
-
-A 32-character passphrase has about 120 bits of entropy, which is overkill for
-most purposes. A 24-character passphrase clocks in at about 90 bits of entropy,
-suitable for most high-security applications like root passwords or financial
-records. You might want to use a password checker to verify the strength of
-your passphrase after generating one that you like:
-
-  http://rumkin.com/tools/password/passchk.php
-
-Inspired by http://xkcd.com/936/
+Passphrases generated from dictionary words are inherently vulnerable to
+dictionary attacks; using more and/or longer words strengthens them against
+such attacks. The default settings are intended to yield relatively strong,
+easy-to-remember passphrases.
 
 EOF
 
 options = {
-  :length => 24,
   :number => 10,
   :dict => '/usr/share/dict/words',
   :digits => false,
-  :chars => 10,
+  :chars => 8,
+  :words => 4,
 }
 
 optparse = OptionParser.new do |opts|
-  opts.on('-l', '--length [NUM]', Integer,
-          "Ensure passphrases are at least NUM characters.",
-          "Default: #{options[:length]}") do |len|
-    options[:length] = len
+  opts.on('-w', '--words [NUM]', Integer,
+          "Ensure passphrases are at least NUM words long.",
+          "Default: #{options[:words]}") do |words|
+    options[:words] = words
   end
 
   opts.on('-n', '--number [NUM]', Integer,
@@ -59,14 +51,14 @@ optparse = OptionParser.new do |opts|
   end
 
   opts.on('-d', '--digits',
-          "Include random numbers from 1-99.",
-          "Default: False") do |digits|
+          "Append a random digit from 0-9 to each word.",
+          "Default: #{options[:digits]}") do |digits|
     options[:digits] = digits
   end
 
   opts.on('-c', '--chars NUM',
           "Limit words to NUM characters in length.",
-          "Default: 10") do |chars|
+          "Default: #{options[:chars]}") do |chars|
     options[:chars] = chars
   end
 
@@ -86,7 +78,8 @@ rescue OptionParser::InvalidOption => e
 end
 
 sp = Generator.new(options[:dict], options)
+puts "Read #{sp.dict.count} words up to #{sp.chars} characters long from #{sp.file}"
 options[:number].times do
-  puts sp.generate(options[:length], :digits=>options[:digits])
+  puts sp.generate(options[:words], :digits=>options[:digits])
 end
 

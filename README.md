@@ -26,20 +26,18 @@ spass is distributed as a gem, so just do:
 Usage
 -----
 
-When run without arguments, spass generates 10 passphrases up to 24 characters
-long using words up to 10 characters long. You can configure this behavior by
-passing command-line arguments; run `spass -h` to see full usage notes.
+When run without arguments, spass generates 10 passphrases, each 4 words long,
+using words up to 8 characters long. You can configure this behavior by passing
+command-line arguments; run `spass -h` to see full usage notes.
 
 Examples:
 
-    $ spass -l 30           # Generate phrases at least 30 characters long
-    $ spass -l 30 -n 20     # Generate 20 phrases at least 30 characters long
+    $ spass -w 3            # Generate 3-word phrases
+    $ spass -w 5 -n 20      # Generate twenty 5-word phrases
     $ spass -c 6            # Limit words to 6 characters
-    $ spass -d              # Include some 1- or 2-digit random numbers
+    $ spass -d              # Append a digit to each word
     $ spass -f mywords.txt  # Get words from mywords.txt (one per line)
 
-Passphrases are guaranteed to be at least as long as the given `-l` number, but
-may be longer.
 
 
 Disclaimer

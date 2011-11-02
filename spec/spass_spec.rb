@@ -3,31 +3,35 @@ require 'spass'
 TEST_DICT = File.expand_path('../data/ten_words', __FILE__)
 
 describe Generator do
-  before(:all) do
+  before(:each) do
     @sp = Generator.new(TEST_DICT)
   end
 
 
-  describe "#read_dict" do
+  describe "#initialize" do
     it "returns an array of lines from the given file" do
-      @sp.read_dict(TEST_DICT).should == [
+      @sp = Generator.new(TEST_DICT)
+      @sp.dict.should == [
         'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
     end
 
     it "only returns words matching a regex" do
-      @sp.read_dict(TEST_DICT, :allowed=>/^t/).should == ['two', 'three', 'ten']
-      @sp.read_dict(TEST_DICT, :allowed=>/^f/).should == ['four', 'five']
-      @sp.read_dict(TEST_DICT, :allowed=>/e$/).should == ['one', 'three', 'five', 'nine']
+      @sp = Generator.new(TEST_DICT, :allowed=>/^t/)
+      @sp.dict.should == ['two', 'three', 'ten']
+      @sp = Generator.new(TEST_DICT, :allowed=>/^f/)
+      @sp.dict.should == ['four', 'five']
+      @sp = Generator.new(TEST_DICT, :allowed=>/e$/)
+      @sp.dict.should == ['one', 'three', 'five', 'nine']
     end
 
     it "only returns words with N chars or fewer" do
-      @sp.read_dict(TEST_DICT, :chars=>3).should == ['one', 'two', 'six', 'ten']
+      @sp = Generator.new(TEST_DICT, :chars=>3)
+      @sp.dict.should == ['one', 'two', 'six', 'ten']
     end
 
     it "raises an exception when the file does not exist" do
-      path = File.expand_path('non/existent/path')
       lambda do
-        @sp.read_dict(path)
+        Generator.new(File.expand_path('non/existent/path'))
       end.should raise_error(RuntimeError, /Cannot find dict file/)
     end
   end
@@ -43,28 +47,27 @@ describe Generator do
 
 
   describe "#random_number" do
-    it "returns a number between 1 and 999" do
-      1000.times do
+    it "returns a number between 0 and 9" do
+      100.times do
         num = @sp.random_number
-        num.should be >= 1
-        num.should be <= 99
+        num.should be >= 0
+        num.should be <= 9
       end
     end
   end
 
 
   describe "#generate" do
-    it "is at least the given length" do
-      [10, 15, 20, 25, 30, 35, 40].each do |len|
-        10.times do
-          @sp.generate(len).length.should be >= len
-        end
+    it "has the given number of words" do
+      [1, 2, 3, 4, 5, 6].each do |words|
+        phrase = @sp.generate(words)
+        phrase.split.count.should == words
       end
     end
 
     it "includes digits when :digits is true" do
       10.times do
-        @sp.generate(24, :digits=>true).should =~ /^([a-z]+ [0-9]+ ?)+$/
+        @sp.generate(24, :digits=>true).should =~ /^([a-z]+[0-9] ?)+$/
       end
     end
   end
