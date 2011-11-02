@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    spass (0.0.2)
+    spass (0.0.3)
 
 GEM
   remote: http://rubygems.org/
