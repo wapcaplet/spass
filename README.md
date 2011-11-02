@@ -50,7 +50,18 @@ collection, I cannot be held responsible if you lose your money or marriage.
 before using it for anything important. Passwords generated with spass are
 inherently vulnerable to a dictionary attack; the only thing that can make
 them resistant to such attacks is their length, so always use at least three
-(preferably more) words.
+(preferably more) words. Single-dictionary-word passwords are trivial for a
+computer to guess.
+
+I'm not any kind of expert on password security, but a little math convinces me
+that dictionary passwords can be quite strong. Using the default spass
+settings, and a typical `/usr/share/dict/words`, the dictionary of words 8
+characters or fewer is about 35,000. In theory, if your passphrase consists of
+4 words chosen from this dictionary, an attacker would have to exhaust
+(35,000^4 / 2) possibilities on average before finding your passphrase. At 1
+billion guesses per second, this would take about 24 years. Of course, if your
+four words were "a", "an", "i", and "eh", the cracking time would be somewhat
+lessened. If you're paranoid, use more words, and longer words.
 
 
 Future plans
