@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "spass"
-  s.version = "0.0.2"
+  s.version = "0.0.3"
   s.summary = "Generate passphrases"
   s.description = <<-EOS
     spass generates passphrases using random words
