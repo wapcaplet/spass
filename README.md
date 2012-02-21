@@ -38,6 +38,23 @@ Examples:
     $ spass -d              # Append a digit to each word
     $ spass -f mywords.txt  # Get words from mywords.txt (one per line)
 
+Samples:
+
+    $ spass -n 5
+    Read 36530 words up to 8 characters long from /usr/share/dict/words
+    clump gecko planters marksmen
+    cylinder croupier fonds craggier
+    lip scorned misspend knitting
+    triple assuaged wisdom flatbeds
+    journal wigs sultan danders
+
+    $ be bin/spass -n 5  -c 5
+    Read 7655 words up to 5 characters long from /usr/share/dict/words
+    babes annul elm gate
+    gains flaky mash gang
+    grim state yaps dado
+    kinds ms cults terms
+    ogles today taco guild
 
 
 Disclaimer
@@ -58,10 +75,18 @@ that dictionary passwords can be quite strong. Using the default spass
 settings, and a typical `/usr/share/dict/words`, the dictionary of words 8
 characters or fewer is about 35,000. In theory, if your passphrase consists of
 4 words chosen from this dictionary, an attacker would have to exhaust
-(35,000^4 / 2) possibilities on average before finding your passphrase. At 1
-billion guesses per second, this would take about 24 years. Of course, if your
-four words were "a", "an", "i", and "eh", the cracking time would be somewhat
-lessened. If you're paranoid, use more words, and longer words.
+(35,000^4 / 2) possibilities on average before finding your passphrase (and
+that's assuming the attacker *knows* that your passphrase consists of four
+dictionary words). At 1 billion guesses per second, this would take about 24
+years. Of course, if your four words were "a", "an", "i", and "eh", the
+cracking time would be somewhat lessened.
+
+If you're paranoid, use more words, and longer words. Toss in a few digits or
+symbols to make it even stronger, and/or to meet the password requirements of
+the system you're using. You might use CamelCase or snake_case or
+hyphenated-words, depending on what's easy for you to remember and type. spass
+can't choose your password for you; it only gives some randomized suggestions
+that will help you construct a password that is both memorable and hard to guess.
 
 
 Future plans
